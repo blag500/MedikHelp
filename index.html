@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedikHelp | Частни медицински превози</title>
+    <link rel="icon" href="images/favicon_final_nobg.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+
+
+    <style>
+
+    .hero-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/figma_mainpage_background.jpg');
+    background-size: cover;
+    background-position: center 85%; /* Центрира изображението малко по-ниско */
+    height: 100vh; /* Заета цялата височина на екрана */
+}
+
+  .hero-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/figma_mainpage_background.jpg');
+    background-size: cover;
+    background-position: center 85%;
+    height: 100vh;
+  }
+
+  .emergency-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .map-container {
+    height: 400px;
+    width: 100%;
+  }
+
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .testimonial-card {
+    transition: transform 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .viber-btn:hover {
+    background-color: #7d3daf !important;
+  }
+</style>
+
+
+</head>
+<body class="font-sans">
+    <!-- Emergency Button -->
+<a href="tel:+359885463999"
+   id="emergency-call"
+   class="fixed bottom-6 right-6 z-[999] bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-full flex items-center shadow-lg animate-pulse"
+   style="text-decoration: none;">
+   <i class="fas fa-ambulance mr-2 text-xl"></i>
+   <span>Спешен случай</span>
+</a>
+
+    <!-- Navigation -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3">
+        <div class="flex justify-between items-center">
+            <!-- Лого + цветен текст -->
+            <div class="flex items-center">
+                <a href="#home" class="flex items-center space-x-2">
+                    <img src="images/logo.png" alt="MedikHelp Logo" class="h-12 w-auto">
+                    <span class="text-2xl font-bold">
+                        <span style="color: #16379b;">Medik</span><span style="color: #c20704;">Help</span>
+                    </span>
+                </a>
+            </div>
+
+            <!-- Desktop Menu -->
+<div class="hidden md:flex space-x-8">
+    <a href="#home" class="text-[#16379b] font-bold text-lg hover:underline transition">Начало</a>
+    <a href="#services" class="text-[#16379b] font-bold text-lg hover:underline transition">Услуги</a>
+    <a href="#booking" class="text-[#16379b] font-bold text-lg hover:underline transition">Резервация</a>
+    <a href="#calculator" class="text-[#16379b] font-bold text-lg hover:underline transition">Калкулатор</a>
+    <a href="#about" class="text-[#16379b] font-bold text-lg hover:underline transition">За нас</a>
+    <a href="#contact" class="text-[#16379b] font-bold text-lg hover:underline transition">Контакти</a>
+</div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+            <a href="#home" class="block py-2 text-gray-800 hover:text-blue-600">Начало</a>
+            <a href="#services" class="block py-2 text-gray-800 hover:text-blue-600">Услуги</a>
+            <a href="#booking" class="block py-2 text-gray-800 hover:text-blue-600">Резервация</a>
+            <a href="#calculator" class="block py-2 text-gray-800 hover:text-blue-600">Калкулатор</a>
+            <a href="#about" class="block py-2 text-gray-800 hover:text-blue-600">За нас</a>
+            <a href="#contact" class="block py-2 text-gray-800 hover:text-blue-600">Контакти</a>
+        </div>
+    </div>
+</nav>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#home" class="block py-2 text-gray-800 hover:text-blue-600">Начало</a>
+                <a href="#services" class="block py-2 text-gray-800 hover:text-blue-600">Услуги</a>
+                <a href="#booking" class="block py-2 text-gray-800 hover:text-blue-600">Резервация</a>
+                <a href="#calculator" class="block py-2 text-gray-800 hover:text-blue-600">Калкулатор</a>
+                <a href="#about" class="block py-2 text-gray-800 hover:text-blue-600">За нас</a>
+                <a href="#contact" class="block py-2 text-gray-800 hover:text-blue-600">Контакти</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+<section id="home" class="hero-image flex items-center justify-center text-center text-white">
+    <div class="container mx-auto px-6">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">Специализиран медицински транспорт</h1>
+        <p class="text-xl md:text-2xl mb-8">Безопасност, Удобство, Надеждност 24/7</p>
+        <a href="#booking" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition duration-300 inline-block">
+            <i class="fas fa-calendar-check mr-2"></i> Резервирайте трансфер
+        </a>
+    </div>
+</section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Нашите услуги</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-hospital text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Трансфер между болнични заведения</h3>
+                    <p class="text-gray-600">Безопасни и навременни превози между медицински заведения с напълно оборудвани линейки и обучен персонал.</p>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-home text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">От вкъщи до болница</h3>
+                    <p class="text-gray-600">Удобен транспорт от вашия дом до медицински прегледи или хоспитализация.</p>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-wheelchair text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Транспорт за специални нужди</h3>
+                    <p class="text-gray-600">Специализирани превозни средства и обучен персонал за пациенти с двигателни затруднения или специални медицински нужди.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section id="additional-services" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Допълнителни услуги</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Инвалидна количка -->
+<div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+    <video autoplay muted loop controls class="w-full h-64 object-contain mx-auto mb-4">
+        <source src="videos/20250527_2015_360-Degree Wheelchair Showcase_simple_compose_01jw9bwn4repa8v9ff4gxvygax.mp4" type="video/mp4">
+        Вашият браузър не поддържа видео елемента.
+    </video>
+    <h3 class="text-xl font-bold mb-2">Инвалидна количка под наем</h3>
+    <p class="text-gray-600">Предлагаме удобни, сгъваеми инвалидни колички за краткосрочен и дългосрочен наем. Подходящи за домашна и болнична грижа.</p>
+</div>
+
+            <!-- Болнично легло -->
+<div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+    <video autoplay muted loop controls class="w-full h-64 object-contain mx-auto mb-4">
+        <source src="videos/20250527_2028_Advanced Hospital Bed_simple_compose_01jw9ckx36exh968d6qr0eh9rh.mp4" type="video/mp4">
+        Вашият браузър не поддържа видео елемента.
+    </video>
+    <h3 class="text-xl font-bold mb-2">Болнично легло под наем</h3>
+    <p class="text-gray-600">Електрически болнични легла с дистанционно управление, подходящи за пациенти с ограничена подвижност у дома.</p>
+</div>
+
+</section>
+
+    <!-- Booking Section -->
+<!-- Booking Section -->
+<section id="booking" class="py-16 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Резервирайте медицински трансфер</h2>
+
+    <div class="bg-white rounded-xl shadow-md p-8 max-w-4xl mx-auto">
+      <form id="booking-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Дата на превоза</label>
+            <input type="date" id="date" name="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Час на превоза</label>
+            <input type="time" id="time" name="time" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Име на пациента</label>
+            <input type="text" id="patient-name" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Телефон</label>
+            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Имейл</label>
+            <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Адрес на качване</label>
+            <input type="text" id="pickup" name="pickup" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Дестинация</label>
+            <input type="text" id="destination" name="destination" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Медицински нужди</label>
+            <select id="medical-needs" name="needs" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="Основен транспорт">Основен транспорт</option>
+              <option value="Кислородна подкрепа">Кислородна подкрепа</option>
+              <option value="Носилка">Носилка</option>
+              <option value="Инвалидна количка">Инвалидна количка</option>
+              <option value="Интензивно лечение">Интензивно лечение</option>
+            </select>
+
+            <label class="block text-gray-700 font-medium mb-2 mt-4">Допълнителни бележки</label>
+            <textarea id="notes" name="notes" rows="3" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center">
+          <button type="submit" class="px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-300">
+            <span id="button-text"><i class="fas fa-paper-plane mr-2"></i> Изпратете заявка</span>
+            <span id="loading-spinner" class="hidden animate-spin ml-2"><i class="fas fa-spinner"></i></span>
+          </button>
+        </div>
+
+        <div id="form-message" class="mt-4 text-center text-lg font-semibold hidden"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById('booking-form');
+  const message = document.getElementById('form-message');
+  const buttonText = document.getElementById('button-text');
+  const spinner = document.getElementById('loading-spinner');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Показване на зареждане
+    buttonText.textContent = "Изпращане...";
+    spinner.classList.remove('hidden');
+
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyHxnMbs_O4fXlZ4NSzFAb-N-KDhF-220R9Jwj5GcWx5J1fndHuHDCbqbRFCfdrtN0BUA/exec", {
+        method: 'POST',
+        body: data
+      });
+
+      const result = await response.json();
+
+      if (result.status === "успешно") {
+        message.textContent = "✅ Вашата заявка беше изпратена успешно! Ще се свържем с Вас скоро.";
+        message.classList.remove('hidden');
+        message.classList.add('text-green-600');
+        form.reset();
+      } else {
+        message.textContent = "⚠️ Грешка: " + result.message;
+        message.classList.remove('hidden');
+        message.classList.add('text-red-600');
+      }
+
+    } catch (error) {
+      message.textContent = "❌ Мрежова грешка: " + error.message;
+      message.classList.remove('hidden');
+      message.classList.add('text-red-600');
+    } finally {
+      buttonText.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Изпратете заявка';
+      spinner.classList.add('hidden');
+    }
+  });
+});
+</script>
+
+
+
+                <!-- Map Container -->
+                <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Маршрут на превоза</h2>
+
+        <div class="bg-white rounded-xl shadow-md p-6 max-w-4xl mx-auto">
+            <div id="map" class="w-full h-96 rounded-lg border border-gray-200"></div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+    <!-- Price Calculator Section -->
+    <section id="calculator" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Калкулатор на разходите</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Изчислете приблизителната цена на вашия превоз</h3>
+                    <p class="text-gray-600">Нашата основна цена включва начална такса от 20 лв. и 1 лв. за всеки изминат километър.</p>
+                </div>
+                
+                <form id="calculator-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" for="distance">Разстояние (км)</label>
+                            <input type="number" id="distance" min="1" value="10" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" for="service-type">Тип услуга</label>
+                            <select id="service-type" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                <option value="basic">Основен транспорт</option>
+                                <option value="oxygen">Кислородна подкрепа (+15 лв.)</option>
+                                <option value="stretcher">Транспорт с носилка (+ 25 лв.)</option>
+                                <option value="wheelchair">Транспорт с количка (+ 20 лв.)</option>
+                                <option value="critical">Интензивно лечение (+ 50 лв.)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button type="button" id="calculate-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-calculator mr-2"></i> Изчисли цена
+                        </button>
+                    </div>
+                    
+                    <div id="result" class="mt-8 hidden">
+                        <div class="bg-blue-50 border-l-4 border-blue-600 p-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h4 class="text-lg font-bold text-gray-800">Приблизителна цена:</h4>
+                                    <div class="mt-2">
+                                        <p class="text-gray-700"><span id="base-price"> 20 лв. </span> (начална такса)</p>
+                                        <p class="text-gray-700"><span id="distance-price"> 10  лв. </span> (за разстояние)</p>
+                                        <p class="text-gray-700"><span id="extra-price"> 0 лв. </span> (допълнителни услуги)</p>
+                                        <p class="text-gray-700 mt-2 font-bold">Общо: <span id="total-price" class="text-2xl text-blue-600"> 30 лв. </span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 text-sm text-gray-500">
+                            <p>* Това е приблизителна оценка. Крайната цена може да варира в зависимост от точното разстояние, трафика и други фактори.</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+<section id="about" class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">За MedikHelp</h2>
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Екипът на MedikHelp" class="rounded-lg shadow-lg w-full">
+            </div>
+            <div class="md:w-1/2">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Нашата мисия</h3>
+                <p class="text-gray-600 mb-4" style="text-align: justify;">
+                    Основана през 2024 г., MedikHelp се посвещава на предоставянето на безопасни, надеждни и удобни частни медицински трансфери. Разбираме важността от навременни и професионални медицински превози и се стремим да направим процеса възможно най-лесен за нашите пациенти и техните семейства.
+                </p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Защо да изберете нас?</h3>
+                <ul class="text-gray-600 space-y-2">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mr-2 mt-1"></i>
+                        <span>Достъпност 24/7 за спешни и планирани превози</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mr-2 mt-1"></i>
+                        <span>Напълно оборудвани линейки с модерна медицинска техника</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mr-2 mt-1"></i>
+                        <span>Опитен медицински персонал</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mr-2 mt-1"></i>
+                        <span>Конкурентни цени с прозрачни разходи</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mr-2 mt-1"></i>
+                        <span>Персонализирана грижа за уникалните нужди на всеки пациент</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Какво казват нашите клиенти</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md testimonial-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-user text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Иван Петров</h4>
+                            <p class="text-gray-600 text-sm">Семеен член на пациент</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Екипът на MedikHelp предостави изключителна грижа по време на превоза на баща ми между болници. Бяха професионални, точни и се погрижиха той да се чувства удобно по време на пътуването."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md testimonial-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-user text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Мария Георгиева</h4>
+                            <p class="text-gray-600 text-sm">Редовен пациент</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Като човек, който се нуждае от седмичен диализ, разчитам на MedikHelp за транспорт. Винаги са навреме и персоналът е изключително мил. Чувствам се безопасен в тяхна грижа."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md testimonial-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-user text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Д-р Стефан Димитров</h4>
+                            <p class="text-gray-600 text-sm">Болничен лекар</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Често работим с MedikHelp за превози на пациенти. Медицинският им екип е добре обучен и оборудването им отговаря на болничните стандарти. Надежден партньор за междуучрежденчески превози."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Често задавани въпроси</h2>
+            
+            <div class="max-w-3xl mx-auto">
+                <!-- FAQ Item 1 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-question flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Какви видове медицински превози предлагате?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer accordion-content mt-2 text-gray-600">
+                        <p>Предлагаме широк спектър от медицински транспортни услуги, включително трансфер между болнични заведения, от вкъщи до болница, транспорт след изписване, транспорт за диализа, превози до рехабилитационни центрове и специализирани превози за пациенти, изискващи кислород, носилки или инвалидни колички.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-question flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Колко бързо можете да отговорите на спешни заявки за превоз?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer accordion-content mt-2 text-gray-600">
+                        <p>При спешни ситуации се стремим да изпратим линейка в рамките на 30-60 минути в зависимост от местоположението ви. Нашият екип за спешна помощ е на разположение 24/7 и приоритизираме спешните случаи, за да гарантираме навременно медицинско обслужване.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-question flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Какво медицинско оборудване е налично във вашите линейки?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer accordion-content mt-2 text-gray-600">
+                        <p>Нашите линейки са напълно оборудвани с основно медицинско оборудване, включително кислород, дефибрилатори, комплекти за първа помощ, носилки, инвалидни колички и оборудване за основна животоподдържаща помощ. За специални нужди можем да осигурим допълнително оборудване по заявка.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-question flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Приемате ли здравни застраховки за плащане?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer accordion-content mt-2 text-gray-600">
+                        <p>Работим с няколко големи здравни застрахователи. Моля, свържете се с нашия офис с вашите застрахователни данни и ще проверим вашата покритие. За услуги, които не се покриват от застраховка, предлагаме гъвкави опции за плащане, включително кредитни карти и банкови преводи.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-question flex justify-between items-center w-full text-left font-medium text-gray-800 hover:text-blue-600 focus:outline-none">
+                        <span>Могат ли членове на семейството да придружават пациента по време на превоза?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer accordion-content mt-2 text-gray-600">
+                        <p>Да, в повечето случаи един член на семейството може да придружава пациента, в зависимост от медицинското състояние и наличното пространство в линейката. При превози с интензивно лечение това може да бъде ограничено от съображения за безопасност. Моля, обсъдете това с нашия екип при резервация.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Свържете се с нас</h2>
+            
+            <div class="flex flex-col md:flex-row">
+                <!-- Contact Info -->
+                <div class="md:w-1/3 mb-8 md:mb-0 md:pr-8">
+                    <div class="bg-blue-600 text-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-4">Контакти</h3>
+                        
+                        <div class="mb-4 flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-medium">Телефон</h4>
+                                <p>+359 88 5463999</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-medium">Имейл</h4>
+                                <p>medikhelp@abv.bg</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4 flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3"></i>
+                            <div>
+                                <h4 class="font-medium">Работно време</h4>
+                                <p>24 часа / 7 дни в седмицата</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <a href="viber://contact?number=%2B359885463999" class="viber-btn bg-[#7C4DFF] hover:bg-[#6a3fd6] text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                                <i class="fab fa-viber mr-2"></i> Чат във Viber
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="https://www.facebook.com/search/pages/?q=medikhelp" target="_blank" class="bg-[#4267B2] hover:bg-[#3a5a9a] text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                                <i class="fab fa-facebook-f mr-2"></i> Посетете Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="md:w-2/3">
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <form id="contact-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2" for="name">Име</label>
+                                    <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2" for="email">Имейл</label>
+                                    <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2" for="contact-phone">Телефон</label>
+                                    <input type="tel" id="contact-phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 font-medium mb-2" for="subject">Тема</label>
+                                    <input type="text" id="subject" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <label class="block text-gray-700 font-medium mb-2" for="message">Съобщение</label>
+                                <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required></textarea>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                                    <i class="fas fa-paper-plane mr-2"></i> Изпратете съобщение
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- About Column -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MedikHelp</h3>
+                    <p class="text-gray-400">Предоставяме безопасни и надеждни частни медицински транспортни услуги от 2024 г.</p>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="https://www.facebook.com/search/pages/?q=medikhelp" target="_blank" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="viber://contact?number=%2B359885463999" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-viber text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Services Column -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Услуги</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Спешни превози</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Болнични превози</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">От вкъщи до болница</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Транспорт с инвалидна количка</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Транспорт с носилка</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Quick Links Column -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Бързи връзки</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white">Начало</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white">Услуги</a></li>
+                        <li><a href="#booking" class="text-gray-400 hover:text-white">Резервация</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white">За нас</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white">Контакти</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Column -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Контактна информация</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3"></i>
+                            <span>+359 88 5463999</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3"></i>
+                            <span>medikhelp@abv.bg</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-clock mt-1 mr-3"></i>
+                            <span>24/7 Спешна помощ</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 MedikHelp. Всички права запазени.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                // Toggle answer visibility
+                answer.style.maxHeight = answer.style.maxHeight ? null : answer.scrollHeight + 'px';
+                
+                // Rotate icon
+                icon.classList.toggle('transform');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Form Submission
+        document.getElementById('booking-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Изпращане...';
+
+    const data = {
+        date: document.getElementById('date').value.trim(),
+        time: document.getElementById('time').value.trim(),
+        name: document.getElementById('patient-name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        pickup: document.getElementById('pickup').value.trim(),
+        destination: document.getElementById('destination').value.trim(),
+        needs: document.getElementById('medical-needs').value.trim(),
+        notes: document.getElementById('notes').value.trim()
+    };
+
+    // Проста валидация на задължителни полета
+    if (!data.date || !data.time || !data.name || !data.phone || !data.pickup || !data.destination) {
+        alert("⚠️ Моля, попълнете всички задължителни полета.");
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+        return;
+    }
+
+    try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycby-sSS7ueBog4j3p3N9Th9i1HA3MpBM_WCmwgel-s_0ySIJVHDkg02mGcupqUK-SgGjLQ/exec", {
+            method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+
+        const result = await response.json();
+
+        if (result.status === "успешно") {
+            alert("✅ Заявката е изпратена успешно!");
+            document.getElementById('booking-form').reset();
+        } else {
+            alert("⚠️ Грешка при изпращане: " + result.message);
+        }
+
+    } catch (error) {
+        alert("❌ Възникна мрежова грешка: " + error.message);
+        console.error(error);
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+    }
+});
+
+// Обработка на контактна форма
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('✅ Благодарим ви за вашето съобщение! Ще се свържем с вас възможно най-скоро.');
+    this.reset();
+});
+
+
+        // Price Calculator
+        document.getElementById('calculate-btn').addEventListener('click', function() {
+            const distance = parseInt(document.getElementById('distance').value);
+            const serviceType = document.getElementById('service-type').value;
+            
+            // Base price
+            const basePrice = 20;
+            
+            // Distance price (1 лв. per km)
+            const distancePrice = distance * 1;
+            
+            // Extra service price
+            let extraPrice = 0;
+            switch(serviceType) {
+                case 'oxygen':
+                    extraPrice = 15;
+                    break;
+                case 'stretcher':
+                    extraPrice = 25;
+                    break;
+                case 'wheelchair':
+                    extraPrice = 20;
+                    break;
+                case 'critical':
+                    extraPrice = 50;
+                    break;
+                default:
+                    extraPrice = 0;
+            }
+            
+            // Total price
+            const totalPrice = basePrice + distancePrice + extraPrice;
+            
+            // Update the UI
+            document.getElementById('base-price').textContent = `${basePrice} лв. `;
+            document.getElementById('distance-price').textContent = `${distancePrice} лв. `;
+            document.getElementById('extra-price').textContent = `${extraPrice} лв. `;
+            document.getElementById('total-price').textContent = `${totalPrice} лв. `;
+            
+            // Show the result
+            document.getElementById('result').classList.remove('hidden');
+        });
+
+        // Initialize Google Maps
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 42.698334, lng: 23.319941 }, // Sofia coordinates
+                zoom: 12,
+            });
+
+            // Add autocomplete to pickup and destination fields
+            const pickupInput = document.getElementById('pickup');
+            const destinationInput = document.getElementById('destination');
+            
+            const pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput);
+            const destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput);
+            
+            // Add directions service
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+            
+            // Update route when addresses change
+            function updateRoute() {
+                const pickup = pickupInput.value;
+                const destination = destinationInput.value;
+                
+                if (pickup && destination) {
+                    directionsService.route(
+                        {
+                            origin: pickup,
+                            destination: destination,
+                            travelMode: google.maps.TravelMode.DRIVING,
+                        },
+                        (response, status) => {
+                            if (status === "OK") {
+                                directionsRenderer.setDirections(response);
+                            } else {
+                                console.error("Directions request failed due to " + status);
+                            }
+                        }
+                    );
+                }
+            }
+            
+            pickupInput.addEventListener('change', updateRoute);
+            destinationInput.addEventListener('change', updateRoute);
+        }
+
+        // Initialize map when window loads
+        window.onload = function() {
+            // Note: In a production environment, you would need to replace YOUR_API_KEY with an actual Google Maps API key
+            // initMap();
+            
+            // For this demo, we'll just show a placeholder
+            document.getElementById('map').innerHTML = `
+                <div class="bg-gray-200 h-full flex items-center justify-center">
+                    <div class="text-center p-4">
+                        <i class="fas fa-map-marked-alt text-4xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-600">Тук ще се покаже Google Maps с маршрута на превоза</p>
+                        <p class="text-sm text-gray-500 mt-2">(Изисква Google Maps API ключ в продукционна среда)</p>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
