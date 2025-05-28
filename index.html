@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = new FormData(form);
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbyHxnMbs_O4fXlZ4NSzFAb-N-KDhF-220R9Jwj5GcWx5J1fndHuHDCbqbRFCfdrtN0BUA/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbxSlURReWNvYQoMc1Fl5HKGrSTdRWCuUhoivn0hAGgRUH2Lwjln5OTx0GT13tMv5f3MqA/exec", {
         method: 'POST',
         body: data
       });
@@ -618,56 +618,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Свържете се с нас</h2>
-            
-            <div class="flex flex-col md:flex-row">
-                <!-- Contact Info -->
-                <div class="md:w-1/3 mb-8 md:mb-0 md:pr-8">
-                    <div class="bg-blue-600 text-white p-6 rounded-lg shadow-md">
-                        <h3 class="text-xl font-bold mb-4">Контакти</h3>
-                        
-                        <div class="mb-4 flex items-start">
-                            <i class="fas fa-phone-alt mt-1 mr-3"></i>
-                            <div>
-                                <h4 class="font-medium">Телефон</h4>
-                                <p>+359 88 5463999</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4 flex items-start">
-                            <i class="fas fa-envelope mt-1 mr-3"></i>
-                            <div>
-                                <h4 class="font-medium">Имейл</h4>
-                                <p>medikhelp@abv.bg</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4 flex items-start">
-                            <i class="fas fa-clock mt-1 mr-3"></i>
-                            <div>
-                                <h4 class="font-medium">Работно време</h4>
-                                <p>24 часа / 7 дни в седмицата</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-6">
-                            <a href="viber://contact?number=%2B359885463999" class="viber-btn bg-[#7C4DFF] hover:bg-[#6a3fd6] text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
-                                <i class="fab fa-viber mr-2"></i> Чат във Viber
-                            </a>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <a href="https://www.facebook.com/search/pages/?q=medikhelp" target="_blank" class="bg-[#4267B2] hover:bg-[#3a5a9a] text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
-                                <i class="fab fa-facebook-f mr-2"></i> Посетете Facebook
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Contact Form -->
                 <!-- Contact Section -->
 <section id="contact" class="py-16 bg-gray-50">
   <div class="container mx-auto px-6">
@@ -789,59 +739,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Form Submission
-    document.addEventListener("DOMContentLoaded", function () {
-  const contactForm = document.getElementById('contact-form');
-  if (!contactForm) return;
-
-  contactForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const submitButton = this.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-    submitButton.disabled = true;
-    submitButton.textContent = 'Изпращане...';
-
-    const data = {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      phone: document.getElementById('contact-phone').value.trim(),
-      subject: document.getElementById('subject').value.trim(),
-      message: document.getElementById('message').value.trim()
-    };
-
-    if (!data.name || !data.email || !data.message) {
-      alert("⚠️ Моля, попълнете всички задължителни полета.");
-      submitButton.disabled = false;
-      submitButton.textContent = originalText;
-      return;
-    }
-
-    try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbxSlURReWNvYQoMc1Fl5HKGrSTdRWCuUhoivn0hAGgRUH2Lwjln5OTx0GT13tMv5f3MqA/exec", {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      const result = await response.json();
-
-      if (result.status === "успешно") {
-        alert("✅ Вашето съобщение беше изпратено успешно!");
-        this.reset();
-      } else {
-        alert("⚠️ Грешка: " + result.message);
-      }
-
-    } catch (error) {
-      alert("❌ Мрежова грешка: " + error.message);
-      console.error(error);
-    } finally {
-      submitButton.disabled = false;
-      submitButton.textContent = originalText;
-    }
-  });
-});
 
         // Initialize Google Maps
         function initMap() {
