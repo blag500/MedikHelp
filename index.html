@@ -917,5 +917,64 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     </script>
+
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const contactForm = document.getElementById('contact-form');
+      if (!contactForm) {
+        console.warn("❗ contact-form не е намерен!");
+        return;
+      }
+
+      contactForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Изпращане...';
+
+        const data = {
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('contact-phone').value.trim(),
+          subject: document.getElementById('subject').value.trim(),
+          message: document.getElementById('message').value.trim()
+        };
+
+        if (!data.name || !data.email || !data.message) {
+          alert("⚠️ Моля, попълнете всички задължителни полета.");
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+          return;
+        }
+
+        try {
+          const response = await fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+          });
+
+          const result = await response.json();
+
+          if (result.status === "успешно") {
+            alert("✅ Вашето съобщение беше изпратено успешно!");
+            this.reset();
+          } else {
+            alert("⚠️ Грешка: " + result.message);
+          }
+
+        } catch (error) {
+          alert("❌ Мрежова грешка: " + error.message);
+          console.error(error);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }
+      });
+    });
+  </script>
+    
 </body>
 </html>
