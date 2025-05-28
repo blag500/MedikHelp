@@ -800,65 +800,52 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Form Submission
-        document.getElementById('booking-form').addEventListener('submit', async function(e) {
+       document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const submitButton = this.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.textContent;
+    const originalText = submitButton.textContent;
     submitButton.disabled = true;
     submitButton.textContent = 'Изпращане...';
 
     const data = {
-        date: document.getElementById('date').value.trim(),
-        time: document.getElementById('time').value.trim(),
-        name: document.getElementById('patient-name').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        pickup: document.getElementById('pickup').value.trim(),
-        destination: document.getElementById('destination').value.trim(),
-        needs: document.getElementById('medical-needs').value.trim(),
-        notes: document.getElementById('notes').value.trim()
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('contact-phone').value.trim(),
+        subject: document.getElementById('subject').value.trim(),
+        message: document.getElementById('message').value.trim()
     };
 
-    // Проста валидация на задължителни полета
-    if (!data.date || !data.time || !data.name || !data.phone || !data.pickup || !data.destination) {
+    if (!data.name || !data.email || !data.message) {
         alert("⚠️ Моля, попълнете всички задължителни полета.");
         submitButton.disabled = false;
-        submitButton.textContent = originalButtonText;
+        submitButton.textContent = originalText;
         return;
     }
 
     try {
         const response = await fetch("https://script.google.com/macros/s/AKfycby3MQvCqMSW1yrqikeNVo-433UyE0SUZ9TakZLX-vTSxwDpVqLZTymCmY9VVYQBcRxywg/exec", {
             method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+        });
 
         const result = await response.json();
 
         if (result.status === "успешно") {
-            alert("✅ Заявката е изпратена успешно!");
-            document.getElementById('booking-form').reset();
+            alert("✅ Вашето съобщение беше изпратено успешно!");
+            this.reset();
         } else {
-            alert("⚠️ Грешка при изпращане: " + result.message);
+            alert("⚠️ Грешка: " + result.message);
         }
 
     } catch (error) {
-        alert("❌ Възникна мрежова грешка: " + error.message);
+        alert("❌ Мрежова грешка: " + error.message);
         console.error(error);
     } finally {
         submitButton.disabled = false;
-        submitButton.textContent = originalButtonText;
+        submitButton.textContent = originalText;
     }
-});
-
-// Обработка на контактна форма
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('✅ Благодарим ви за вашето съобщение! Ще се свържем с вас възможно най-скоро.');
-    this.reset();
 });
 
         // Initialize Google Maps
