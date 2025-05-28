@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://blag500.github.io/MedikHelp-koci/sitemap.xml
